@@ -15,7 +15,7 @@
         <a href="services.html">Subjects</a>
         <a href="about.html">About</a>
         <a href="reviews.html">Reviews</a>
-        <a href="book.html" class="btn-primary">Book Now</a>
+        <a href="book.html" class="active-link btn-primary">Book Now</a>
       </nav>
     </div>
   </header>
@@ -37,13 +37,13 @@
 
   <div id="trial" class="tab-content active">
     <div class="calendar-box">
-      <div style="width:100%; height:600px;" id="trial-calendar"></div>
+      <div style="width:100%;height:100%;overflow:scroll" id="my-cal-inline-15-minute-trial-session"></div>
     </div>
   </div>
 
   <div id="hour" class="tab-content">
     <div class="calendar-box">
-      <div style="width:100%; height:700px;" id="hour-calendar"></div>
+      <div style="width:100%;height:100%;overflow:scroll" id="my-cal-inline-1-hour-tutoring-session"></div>
     </div>
   </div>
 
@@ -66,44 +66,55 @@
 </script>
 
 <script type="text/javascript">
-(function (C, A, L) {
-  let p = function (a, ar) { a.q.push(ar); };
-  let d = C.document;
-  C.Cal = C.Cal || function () {
-    let cal = C.Cal;
-    let ar = arguments;
-    if (!cal.loaded) {
-      cal.ns = {};
-      cal.q = cal.q || [];
-      d.head.appendChild(d.createElement("script")).src = A;
-      cal.loaded = true;
-    }
-    if (ar[0] === L) {
-      const api = function () { p(api, arguments); };
-      const namespace = ar[1];
-      api.q = api.q || [];
-      if (typeof namespace === "string") {
-        cal.ns[namespace] = cal.ns[namespace] || api;
-        p(cal.ns[namespace], ar);
-        p(cal, ["initNamespace", namespace]);
-      } else p(cal, ar);
-      return;
-    }
-    p(cal, ar);
-  };
-})(window, "https://app.cal.com/embed/embed.js", "init");
+  (function (C, A, L) { 
+    let p = function (a, ar) { a.q.push(ar); }; 
+    let d = C.document; 
+    C.Cal = C.Cal || function () { 
+      let cal = C.Cal; 
+      let ar = arguments; 
+      if (!cal.loaded) { 
+        cal.ns = {}; 
+        cal.q = cal.q || []; 
+        d.head.appendChild(d.createElement("script")).src = A; 
+        cal.loaded = true; 
+      } 
+      if (ar[0] === L) { 
+        const api = function () { p(api, arguments); }; 
+        const namespace = ar[1]; 
+        api.q = api.q || []; 
+        if(typeof namespace === "string"){
+          cal.ns[namespace] = cal.ns[namespace] || api;
+          p(cal.ns[namespace], ar);
+          p(cal, ["initNamespace", namespace]);
+        } else p(cal, ar); 
+        return;
+      } 
+      p(cal, ar); 
+    }; 
+  })(window, "https://app.cal.com/embed/embed.js", "init");
 
-Cal("init", "trial", { origin: "https://cal.com" });
-Cal.ns["trial"]("inline", {
-  elementOrSelector: "#trial-calendar",
-  calLink: "tutorbug-iaamec/15-minute-trial-session"
-});
+  // --- CONFIGURATION FOR 15 MINUTE TRIAL ---
+  Cal("init", "15-minute-trial-session", {origin:"https://app.cal.com"});
+  
+  Cal.ns["15-minute-trial-session"]("inline", {
+    elementOrSelector:"#my-cal-inline-15-minute-trial-session",
+    config: {"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"light"},
+    calLink: "tutorbug-iaamec/15-minute-trial-session",
+  });
 
-Cal("init", "hour", { origin: "https://cal.com" });
-Cal.ns["hour"]("inline", {
-  elementOrSelector: "#hour-calendar",
-  calLink: "tutorbug-iaamec/1-hour-tutoring-session"
-});
+  Cal.ns["15-minute-trial-session"]("ui", {"theme":"light","hideEventTypeDetails":false,"layout":"month_view"});
+
+  // --- CONFIGURATION FOR 1 HOUR SESSION ---
+  Cal("init", "1-hour-tutoring-session", {origin:"https://app.cal.com"});
+
+  Cal.ns["1-hour-tutoring-session"]("inline", {
+    elementOrSelector:"#my-cal-inline-1-hour-tutoring-session",
+    config: {"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"light"},
+    calLink: "tutorbug-iaamec/1-hour-tutoring-session",
+  });
+
+  Cal.ns["1-hour-tutoring-session"]("ui", {"theme":"light","hideEventTypeDetails":false,"layout":"month_view"});
+
 </script>
 
 </body>
